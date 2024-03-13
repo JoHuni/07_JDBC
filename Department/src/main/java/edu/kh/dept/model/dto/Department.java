@@ -17,6 +17,7 @@ public class Department {
 		this.deptTitle = deptTitle;
 		this.locationId = locationId;
 	}
+
 	
 	public Department(String deptId) {
 		super();

@@ -21,7 +21,6 @@
 				<th>지역 코드(LOCATION_ID)</th>
 			</tr>
 		</thead>
-		
 		<tbody>
 			<c:forEach items="${deptList}" var="dept" varStatus="vs">
 				<tr>
@@ -35,5 +34,23 @@
 		</tbody>
 		
 	</table>
+	
+	<!-- session scope로 전달 받은 message가 있으면 alert()로 출력 -->
+	<c:if test= "${not empty message}">
+		<%-- page ~ application까지 message 속성이 있는지 확인해서
+			존재하는 scope의 값을 얻어옴
+		 --%>
+		<script>
+			const message = "${message}";
+			alert(message);
+		</script>
+		<c:remove var="message" scope="session"/>
+	</c:if>
+	
+
+	<%-- session은 브라우저 종료 또는 만료까지 유지
+		-> 현재 페이지에 들어ㅗ올 때마다 session의 message가 계속 출력됨
+		-> 1회만 message를 출력한 후 제거
+	--%>
 </body>
 </html>
