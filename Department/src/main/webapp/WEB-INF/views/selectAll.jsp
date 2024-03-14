@@ -19,6 +19,8 @@
 				<th>부서 코드(DEPD_ID)</th>
 				<th>부서명(DEPD_TITLE)</th>
 				<th>지역 코드(LOCATION_ID)</th>
+				<th>수정 버튼</th>
+				<th>삭제 버튼</th>
 			</tr>
 		</thead>
 		<tbody>
@@ -29,6 +31,13 @@
 					<td>${dept.deptId}</td>
 					<td>${dept.deptTitle}</td>
 					<td>${dept.locationId}</td>
+
+					<th>
+						<button type="button" class="update-btn">수정</button>
+					</th>
+					<th>
+						<button type="button" class="delete-btn">삭제</button>
+					</th>
 				</tr>
 			</c:forEach>
 		</tbody>
@@ -52,5 +61,7 @@
 		-> 현재 페이지에 들어ㅗ올 때마다 session의 message가 계속 출력됨
 		-> 1회만 message를 출력한 후 제거
 	--%>
+
+	<script src="/resources/js/selectAll.js"></script>
 </body>
 </html>

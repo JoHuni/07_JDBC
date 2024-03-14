@@ -12,4 +12,26 @@
 		INSERT INTO DEPARTMENT4
 		VALUES (?, ?, ?)
 	</entry>
+	
+	<entry key="deleteDepartment">
+		DELETE FROM DEPARTMENT4
+		WHERE DEPT_ID = ?
+	</entry>
+		<!-- 부서 1행 조회 -->
+	<entry key="selectOne">
+		SELECT * FROM DEPARTMENT4
+		WHERE DEPT_ID = ?
+	</entry>
+	<entry key="updateDepartment">
+		UPDATE DEPARTMENT4
+		SET
+		DEPT_TITLE = ?,
+		LOCATION_ID = ?
+		WHERE DEPT_ID = ?
+	</entry>
+	<entry key="searchDepartment">
+		SELECT DEPT_ID, DEPT_TITLE, LOCATION_ID
+		FROM DEPARTMENT4
+    	WHERE DEPT_TITLE LIKE '%' || ? || '%'
+	</entry>
 </properties>

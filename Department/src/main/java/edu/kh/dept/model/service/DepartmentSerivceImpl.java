@@ -78,4 +78,108 @@ public class DepartmentSerivceImpl implements DepartmentService{
 		return result;
 
 	}
+
+	// 여러 부서 추가
+	@Override
+	public int MultiInsert(List<Department> deptList) throws DepartmentInsertException {
+		// 1. Connection 얻어오기
+		Connection conn = getConnetion();
+		int result = 0; // 삽입된 행의 개수 누적
+		String currentDeptId = null; // 현재 삽입하려는 부서 코드를 저장하는 변수
+		try {
+			// 2. 전달 받은 deptList의 크기(길이)만큼 반복하며
+			// DB에 INSERT하는 DAO 메서드 호출
+			for(Department dept : deptList) {
+				currentDeptId = dept.getDeptId(); // 삽입할 deptId를 변수에 저장
+				result += dao.insertDepartment(conn, dept);
+			}
+			// 3. 트랜잭션 제어 처리
+			// result에 누적된 값(== 삽입 성공한 행의 개수)
+			// deptList의 길이가 같은 경우
+			// == 모두 삽입 성공한 경우 -> commit
+			// result != deptList의 길이
+			// == 하나라도 실패한 경우 -> rollback
+			if(result == deptList.size()) {
+				commit(conn);
+			}
+			else {
+				rollback(conn);
+			}
+		}		
+		catch(SQLException e) {
+			// 4.SQL 수행 중 오류 발생 시
+			// (PK, NOT NULL 제약 조건 위배, 데이터 크기 초과, DB 연결 종료)
+			e.printStackTrace();
+			
+			rollback(conn); // SQL이 하나라도 실패하면 전체 rollback
+			
+			// 예외가 발생이 되었음을 Controller(Servlet)에 전달 하기
+			// -> 사용자 정의 예외 강제 발생
+			throw new DepartmentInsertException(currentDeptId + "부서 코드가 이미 존재합니다");
+			
+		}
+		finally {
+			close(conn);
+		}
+		return result;
+	}
+
+	@Override
+	public int deleteDepartment(String deptId) throws SQLException {
+		Connection conn = getConnetion();
+		int result = 0;
+
+		result = dao.deleteDepartment(conn, deptId); 
+		if(result > 0) {
+			commit(conn);
+		}
+		else {
+			rollback(conn);
+		}
+
+		close(conn);
+		
+		return result;
+	}
+
+	@Override
+	public Department selectOne(String deptId) throws SQLException {
+		// 커넥션 얻어오기
+		Connection conn = getConnetion();
+		
+		// DAO 메서드 호출 후 결과 반환 받기
+		Department dept = dao.selectOne(conn, deptId);
+		
+		// 커넥션 반환
+		close(conn);
+		
+		// 결과 반환
+		return dept;
+	}
+	
+	@Override
+	public int updateDepartment(Department dept) throws SQLException {
+		Connection conn = getConnetion();
+		
+		int result = dao.updateDepartment(conn, dept);
+		
+		if(result > 0) {
+			commit(conn);
+		}
+		else {
+			rollback(conn);
+		}
+		
+		return result;
+	}
+	@Override
+	public List<Department> searchDepartment(String keyword) throws SQLException {
+		/* 1. 커넥션 얻어오기 */
+		Connection conn = getConnetion();
+		
+		/* 2. DAO 메서드 호출 (매개 변수로 Connection 전달) */
+		List<Department> deptList = dao.searchDepartment(conn, keyword);
+		
+		return deptList;
+	}
 }
