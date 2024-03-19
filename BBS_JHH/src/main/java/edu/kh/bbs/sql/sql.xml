@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
+<properties>
+	<entry key="loiginUser">
+		SELECT USER_ID, USER_PW, USER_NAME, PHONE_NUMBER
+		FROM TB_USER
+		WHERE USER_ID = ?
+		AND USER_PW = ?
+	</entry>
+
+	<entry key="signupUser">
+		INSERT INTO TB_USER VALUES(?, ?, ?, ?, '30', SYSDATE)
+	</entry>
+	
+	<entry key="findUserId">
+		SELECT USER_ID
+		FROM TB_USER
+		WHERE USER_NAME = ?
+		AND PHONE_NUMBER = ?
+	</entry>
+	
+	<entry key="findUserPw">
+		SELECT USER_PW
+		FROM TB_USER
+		WHERE USER_ID = ?
+	</entry>
+	
+	<entry key="updateUser">
+		UPDATE TB_USER
+		SET
+		USER_PW = ?,
+		USER_NAME = ?,
+		PHONE_NUMBER = ?
+		WHERE USER_ID = ?
+	</entry>
+	<entry key="deleteUser">
+		DELETE FROM
+		TB_USER
+		WHERE USER_ID = ?
+	</entry>
+	
+	<entry key="postBoard">
+		INSERT INTO FREE_BOARD
+		VALUES(SEQ_BOARD_NO.NEXTVAL, ?, ?, ?)
+	</entry>
+	
+	<entry key="selectAllBBS">
+		SELECT * FROM FREE_BOARD
+		ORDER BY BOARD_NO DESC
+	</entry>
+
+	<entry key="getboardNo">
+		SELECT BOARD_NO
+		FROM FREE_BOARD
+	</entry>
+	
+	<entry key="deleteBoard">
+		DELETE 
+		FROM FREE_BOARD
+ 		WHERE BOARD_NO = ?
+	</entry>
+	
+	<entry key="updateBoard">
+		UPDATE FREE_BOARD
+		SET
+		BOARD_TITLE = ?,
+		BOARD_CONTENT = ?,
+		BOARD_WRITER = ?
+		WHERE BOARD_NO = ?
+	</entry>
+</properties>
